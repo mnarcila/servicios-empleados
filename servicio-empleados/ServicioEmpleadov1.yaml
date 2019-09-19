@@ -1,0 +1,210 @@
+swagger: '2.0'
+info:
+  description: Servicio para la gestión de empleados en  OMS Kallsonys
+  version: 1.0.0
+  title: Servicio Empleados Kallsonys
+ 
+basePath: /OMS/Empleados/v1
+tags:
+  - name: Empleado
+    description: Gestión de Empleados
+schemes:
+  - http
+paths:
+  '/empleado':
+    post:
+      tags:
+        - Empleado
+      summary: Registrar un Empleado
+      operationId: registrarEmpleado
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: headerRq
+          in: header
+          description: >-
+            Cabecera estándar
+          required: true
+          type: string
+        - name: serviceID
+          in: header
+          description: 'servKall3'
+          required: true
+          type: string
+        - in: body
+          name: Empleado
+          description: Empleado a registrar
+          required: true
+          schema:
+            $ref: '#/definitions/Empleado'
+      responses:
+        '200':
+          description: EXITO
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+  '/empleado/{idEmpleado}':
+    get:
+      tags:
+        - Empleado
+      summary: Consultar Empleado por ID
+      description: Retorna un empleado
+      operationId: conultarEmpleadoPorId
+      produces:
+        - application/json
+      parameters:
+        - name: headerRq
+          in: header
+          description: >-
+            Cabecera estándar
+          required: true
+          type: string
+        - name: serviceID
+          in: header
+          description: 'servKall3'
+          required: true
+          type: string
+        - in: path
+          name: idEmpleado
+          description: Id del empleado a consultar
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: EXITO
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'   
+    put:
+      tags:
+        - Empleado 
+      summary: Actualizar Inactivar/Activar Empleado por ID 
+      description: Actualizar un empleado 
+      operationId: actualizarEmpleadoPorId
+      produces:
+        - application/json
+      parameters:
+        - name: headerRq
+          in: header
+          description: >-
+            Cabecera estándar
+          required: true
+          type: string
+        - name: serviceID
+          in: header
+          description: 'servKall3'
+          required: true
+          type: string
+        - in: path
+          name: idEmpleado
+          description: Id del empleado a inactivar/activar
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: EXITO
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'             
+  '/empleado/authenticationService/{usuario}/{pass}':
+    get:
+      tags:
+        - Empleado
+      summary: Autenticar Empleado 
+      description: Autenticar un empleado
+      operationId: autenticarEmpleado
+      produces:
+        - application/json
+      parameters:
+        - name: headerRq
+          in: header
+          description: >-
+            Cabecera estándar
+          required: true
+          type: string
+        - name: serviceID
+          in: header
+          description: 'servKall3'
+          required: true
+          type: string
+        - in: path
+          name: usuario
+          description: Id del empleado a consultar
+          required: true
+          type: string
+        - in: path
+          name: pass
+          description: Id del empleado a consultar
+          required: true
+          type: string  
+      responses:
+        '200':
+          description: EXITO
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/EmpleadoRsType'           
+       
+definitions:
+  StatusType:
+    type: object
+    properties:
+      statusCode:
+        type: integer
+        description: Código de status.
+      statusDesc:
+        type: string
+        description: Descripción de estatus.
+    description: Status de respuesta.
+    xml:
+      name: StatusType
+  ParametrosDeSalidaType:
+    type: object
+    properties:
+      datosdelObjeto:
+        type: object
+        description: información de devuelta.
+    description: Cambios por cada uno de los servicios 
+    xml:
+      name: ParametrosDeSalidaType
+  EmpleadoRsType:
+    type: object
+    properties:
+      status:
+        $ref: '#/definitions/StatusType'
+      datosBasicos:
+        $ref: '#/definitions/ParametrosDeSalidaType'
+    description: Respuesta genérica.
+    xml:
+      name: EmpleadoXmlRsType
+  Empleado:
+    $ref: 'https://gist.githubusercontent.com/devwfr/2fc29eadd4f1e98d04b97fe8ca6e40be/raw/a3490f489598f50be0f92596a4bc3506f2a2e71e/Empleado.schema'
